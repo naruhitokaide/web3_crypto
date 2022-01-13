@@ -123,7 +123,6 @@ export const TransactionsProvider = ({ children }: TransactionContextProps) => {
   };
 
   const connectWallet = async () => {
-    console.log('click');
     try {
       if (!ethereum) {
         return alert('Please install metamask!');
@@ -177,6 +176,8 @@ export const TransactionsProvider = ({ children }: TransactionContextProps) => {
       const transactionCount = await transactionContract.getTransactionCount();
 
       setTransactionCount(transactionCount.toNumber());
+
+      window.location.reload();
     } catch (error) {
       console.log('error:', error);
     }
