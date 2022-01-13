@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { SiEthereum } from 'react-icons/si';
 import { BsInfoCircle } from 'react-icons/bs';
@@ -29,9 +29,26 @@ const Input: React.FC<InputProps> = ({ placeholder, name, type, handleChange, va
 );
 
 const Welcome = () => {
-  const { connectWallet, currentAccount } = useContext(TransactionContext);
+  const { connectWallet, currentAccount, formData, setFormData, handleChange, sendTransactions } =
+    useContext(TransactionContext);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e: React.MouseEvent<HTMLInputElement | HTMLButtonElement>) => {
+    const { addressTo, amount, message, keyword } = formData;
+
+    e.preventDefault();
+
+    if (addressTo === '' || amount === '' || keyword === '' || message === '') {
+      return alert('Please fill all fields');
+    }
+
+    sendTransactions();
+  };
+
+  const { addressTo, amount, message, keyword } = formData;
+
+  useEffect(() => {
+    console.log('data form: ', { addressTo, amount, message, keyword });
+  }, [formData]);
 
   return (
     <div className='flex items-center justify-center w-full'>
@@ -78,10 +95,30 @@ const Welcome = () => {
           </div>
 
           <div className='flex flex-col items-center justify-start w-full p-5 sm:w-96 blue-glassmorphism'>
-            <Input placeholder='Address To' name='addressTo' type='text' handleChange={() => {}} />
-            <Input placeholder='Amount (ETH)' name='amount' type='number' handleChange={() => {}} />
-            <Input placeholder='Keyword (GIF)' name='keyword' type='text' handleChange={() => {}} />
-            <Input placeholder='Enter message' name='message' type='text' handleChange={() => {}} />
+            <Input
+              placeholder='Address To'
+              name='addressTo'
+              type='text'
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder='Amount (ETH)'
+              name='amount'
+              type='number'
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder='Keyword (Gif)'
+              name='keyword'
+              type='text'
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder='Enter Message'
+              name='message'
+              type='text'
+              handleChange={handleChange}
+            />
             <div className='h-[1px] w-full bg-gray-400 my-2' />
             {false ? (
               <Loader />
