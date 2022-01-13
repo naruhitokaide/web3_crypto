@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { HiMenuAlt4 } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
 import Logo from '../../../images/logo.png';
+import { TransactionContext } from '../../context/TransactionContext';
 
 const NavbarItem = ({
   title,
@@ -15,6 +16,7 @@ const NavbarItem = ({
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+  const { currentAccount, connectWallet } = useContext(TransactionContext);
 
   return (
     <nav className='flex items-center justify-between w-full py-4 md:justify-center'>
@@ -25,7 +27,9 @@ const Navbar = () => {
         {['Market', 'Exchange', 'Tutorials', 'Wallets'].map((title, index) => {
           return <NavbarItem key={index + title} title={title} />;
         })}
-        <li className='bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]'>
+        <li
+          className='bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]'
+          onClick={connectWallet}>
           Login
         </li>
       </ul>
