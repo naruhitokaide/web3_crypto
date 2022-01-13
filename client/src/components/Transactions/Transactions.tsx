@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { TransactionContext } from '../../context/TransactionContext';
 import useFetch from '../../hooks/useFetch';
 import dummyData from '../../utils/dummyData';
@@ -59,14 +59,13 @@ const TransactionCard = ({
             </>
           )}
         </div>
-        {gifUrl ||
-          (url && (
-            <img
-              src={gifUrl || url}
-              alt=''
-              className='object-cover w-full h-64 rounded-md shadow-lg 3x:h-96'
-            />
-          ))}
+        {gifUrl && (
+          <img
+            src={gifUrl}
+            alt={keyword}
+            className='object-cover w-full h-64 rounded-md shadow-lg 3x:h-96'
+          />
+        )}
 
         <div className='p-3 px-5 bg-black shadow-2xl w-max rounded-3xl'>
           <p className='text-[#37c7da] font-bold'>{timestamp} </p>
@@ -77,7 +76,8 @@ const TransactionCard = ({
 };
 
 const Transactions = () => {
-  const { formData, currentAccount } = useContext(TransactionContext);
+  const { currentAccount, transactions, transactionCount } = useContext(TransactionContext);
+
   return (
     <div className='flex items-center justify-center w-full 2xl:px-20 gradient-bg-transactions'>
       <div className='flex flex-col px-4 py-12 md:p-12'>
@@ -91,7 +91,7 @@ const Transactions = () => {
 
         {/* Connect your account to see last transactions */}
         <div className='flex flex-wrap items-center justify-center mt-10'>
-          {dummyData.reverse().map((transaction, index) => {
+          {transactions.reverse().map((transaction, index) => {
             return <TransactionCard key={index} {...transaction} />;
           })}
         </div>
