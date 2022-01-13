@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({ placeholder, name, type, handleChange, va
 );
 
 const Welcome = () => {
-  const { connectWallet, currentAccount, formData, setFormData, handleChange, sendTransactions } =
+  const { connectWallet, currentAccount, formData, isLoading, handleChange, sendTransactions } =
     useContext(TransactionContext);
 
   const handleSubmit = (e: React.MouseEvent<HTMLInputElement | HTMLButtonElement>) => {
@@ -121,7 +121,7 @@ const Welcome = () => {
               handleChange={handleChange}
             />
             <div className='h-[1px] w-full bg-gray-400 my-2' />
-            {false ? (
+            {isLoading ? (
               <Loader />
             ) : (
               <button
