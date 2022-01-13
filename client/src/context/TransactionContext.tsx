@@ -5,6 +5,7 @@ import { contractABI, contractAddress } from '../utils/constants';
 export const TransactionContext = createContext({
   connectWallet: () => {},
   currentAccount: '',
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => {},
 });
 
 const { ethereum }: any = window;
@@ -27,11 +28,24 @@ interface TransactionContextProps {
 
 export const TransactionsProvider = ({ children }: TransactionContextProps) => {
   const [currentAccount, setCurrentAccount] = useState('');
+  const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [transactionCount, setTransactionCount] = useState(
+    localStorage.getItem('transactionCount')
+  );
+  const [transactions, setTransactions] = useState([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: e.target.value,
+    }));
+  };
 
   const checkIfWalletConnected = async () => {
     try {
       if (!ethereum) {
-        return alert('please install metamask!');
+        return alert('Please install metamask!');
       }
 
       const accounts: any[] = await ethereum.request({ method: 'eth_accounts' });
@@ -52,7 +66,7 @@ export const TransactionsProvider = ({ children }: TransactionContextProps) => {
     console.log('click');
     try {
       if (!ethereum) {
-        return alert('please install metamask!');
+        return alert('Please install metamask!');
       }
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -63,12 +77,22 @@ export const TransactionsProvider = ({ children }: TransactionContextProps) => {
     }
   };
 
+  const sendTransactions = async (amount: number, to: string) => {
+    try {
+      if (!ethereum) {
+        return alert('Please install metamask!');
+      }
+    } catch (error) {
+      console.log('error:', error);
+    }
+  };
+
   useEffect(() => {
     checkIfWalletConnected();
   }, []);
 
   return (
-    <TransactionContext.Provider value={{ connectWallet, currentAccount }}>
+    <TransactionContext.Provider value={{ connectWallet, currentAccount, handleChange }}>
       {children}
     </TransactionContext.Provider>
   );
