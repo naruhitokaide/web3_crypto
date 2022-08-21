@@ -1,7 +1,6 @@
 // https://eth-ropsten.alchemyapi.io/v2/1Fu4Jn3DcjegvS56l2UINAshrHVdtPJz
 
 require('@nomiclabs/hardhat-waffle');
-
 module.exports = {
   solidity: '0.8.0',
   networks: {
